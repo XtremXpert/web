@@ -1,13 +1,15 @@
 /* Copyright 2023 Taras Shabaranskyi
  * License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). */
 
-import {Component, xml} from "@odoo/owl";
+import {Component, useProps} from "@odoo/owl";
 import {registry} from "@web/core/registry";
 import {useService} from "@web/core/utils/hooks";
 import {user} from "@web/core/user";
 
 class AppsMenuPreferences extends Component {
-    static props = {};
+    static template = "web_responsive.AppsMenuPreferences";
+    props = useProps({});
+
     setup() {
         this.action = useService("action");
         this.user = user;
@@ -21,19 +23,6 @@ class AppsMenuPreferences extends Component {
         this.action.doAction({...action, res_id: this.user.userId}, {onClose}).then();
     }
 }
-
-AppsMenuPreferences.template = xml`
-    <div class="o-dropdown dropdown o-dropdown--no-caret">
-        <button
-            role="button"
-            type="button"
-            title="App Menu Preferences"
-            class="dropdown-toggle o-dropdown--narrow"
-            t-on-click="_onClick">
-                <i class="fa fa-tint fa-lg px-1"/>
-        </button>
-    </div>
-`;
 
 registry
     .category("systray")

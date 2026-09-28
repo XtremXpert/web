@@ -4,22 +4,20 @@
 import {AppsMenuCanonicalSearchBar} from "@web_responsive/components/menu_canonical_searchbar/searchbar.esm";
 import {AppsMenuFuseSearchBar} from "@web_responsive/components/menu_fuse_searchbar/searchbar.esm";
 import {AppsMenuOdooSearchBar} from "@web_responsive/components/menu_odoo_searchbar/searchbar.esm";
-import {Component} from "@odoo/owl";
+import {Component, useProps} from "@odoo/owl";
 import {session} from "@web/session";
 
 export class AppsMenuSearchBar extends Component {
+    static template = "web_responsive.AppsMenuSearchBar";
+    static components = {
+        AppsMenuOdooSearchBar,
+        AppsMenuCanonicalSearchBar,
+        AppsMenuFuseSearchBar,
+    };
+    props = useProps({});
+
     setup() {
         super.setup();
         this.searchType = session.apps_menu.search_type || "canonical";
     }
 }
-
-Object.assign(AppsMenuSearchBar, {
-    props: {},
-    template: "web_responsive.AppsMenuSearchBar",
-    components: {
-        AppsMenuOdooSearchBar,
-        AppsMenuCanonicalSearchBar,
-        AppsMenuFuseSearchBar,
-    },
-});
