@@ -1,11 +1,13 @@
 # Copyright 2024 OERP Canada <https://www.oerp.ca>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl)
 
+import base64
+
 from PIL import Image
 
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
-from odoo.tools.image import base64_to_image, image_to_base64
+from odoo.tools.image import binary_to_image, image_apply_opt
 
 from odoo.addons.http_routing.tests.common import MockRequest
 
@@ -26,14 +28,14 @@ class TestWebFavicon(TransactionCase):
             }
         )
 
-        image = base64_to_image(company.favicon)
+        image = binary_to_image(company.favicon)
         self.assertEqual(image.format, "ICO")
 
         # Test setting a JPEG file that is too big, done through write
         bg_color = (135, 90, 123)
         image = Image.new("RGB", (1920, 1080), color=bg_color)
-        company.favicon = image_to_base64(image, "JPEG")
-        image = base64_to_image(company.favicon)
+        company.favicon = base64.b64encode(image_apply_opt(image, "JPEG")).decode()
+        image = binary_to_image(company.favicon)
         self.assertEqual(image.format, "JPEG")
         self.assertEqual(image.size, (1920, 1080))
         self.assertEqual(image.getpixel((0, 0)), bg_color)
