@@ -1,0 +1,11 @@
+// Odoo 20 fournit nativement la taille "fs" (.modal-fs, pleine largeur) :
+// seul le positionnement des boutons reste à styler.
+.modal {
+    .dialog_button_restore,
+    .dialog_button_extend {
+        margin-left: auto;
+        + .btn-close {
+            margin: -8px -8px -8px 0px;
+        }
+    }
+}

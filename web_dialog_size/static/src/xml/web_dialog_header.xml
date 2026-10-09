@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-inherit="web.Dialog.header" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('btn-close')]" position="before">
+            <ExpandButton
+                getsize="this.getSize"
+                getoriginalsize="this.getOriginalSize"
+                setsize="this.setSize"
+                t-if="!fullscreen and this.getSize and this.setSize"
+            />
+        </xpath>
+        <!-- Design « minimal » (sm/md) : Odoo place la croix en absolu dans le coin
+             quand il n'y a pas de bouton d'agrandissement ; avec le nôtre, on la
+             garde dans le flux pour éviter le chevauchement. -->
+        <xpath expr="//button[hasclass('btn-close')]" position="attributes">
+            <attribute
+                name="t-att-class"
+            >{'position-sm-absolute top-0 end-0': this.design == 'minimal' and !onExpand and !this.setSize }</attribute>
+        </xpath>
+    </t>
+</templates>
