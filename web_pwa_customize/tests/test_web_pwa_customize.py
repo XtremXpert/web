@@ -3,6 +3,7 @@
 
 import base64
 import io
+import os
 
 from PIL import Image
 
@@ -50,6 +51,14 @@ class TestWebPwaCustomize(HttpCaseWithUserDemo):
         data = response.json()
         self.assertIn("icons", data)
         self.assertGreaterEqual(len(data["icons"]), 6)
+        # The stored icons are the image bytes (original and resized ones)
+        icons = self.env["ir.attachment"].search(
+            [("url", "like", "/web_pwa_customize/icon")]
+        )
+        self.assertEqual(len(icons), 7)
+        for icon in icons:
+            self.assertEqual(icon.mimetype, "image/png")
+            self.assertTrue(icon.raw.content.startswith(b"\x89PNG"))
         # 2. Test SVG (valid)
         svg_content = (
             '<svg width="100" height="100">'
@@ -84,6 +93,17 @@ class TestWebPwaCustomize(HttpCaseWithUserDemo):
         large_base64 = base64.b64encode(large_content).decode()
         with self.assertRaises(exceptions.UserError):
             config.write({"pwa_icon": large_base64})
+            config.execute()
+        # 5b. A valid PNG larger than 2 MB is refused by the size check itself
+        # (Odoo 20: the field value is a BinaryValue, sys.getsizeof() of it
+        # never reached the limit).
+        noise = Image.frombytes("RGB", (1024, 1024), os.urandom(1024 * 1024 * 3))
+        noise_byte_arr = io.BytesIO()
+        noise.save(noise_byte_arr, format="PNG")
+        self.assertGreater(len(noise_byte_arr.getvalue()), 2196608)
+        noise_base64 = base64.b64encode(noise_byte_arr.getvalue()).decode()
+        with self.assertRaisesRegex(exceptions.UserError, "more than 2 MB"):
+            config.write({"pwa_icon": noise_base64})
             config.execute()
         # 6. Test Invalid Image type (gif)
         gif_img = Image.new("RGB", (512, 512), color="green")

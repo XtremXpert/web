@@ -2,7 +2,6 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 import base64
 import io
-import sys
 
 from PIL import Image
 
@@ -61,15 +60,14 @@ class ResConfigSettings(models.TransientModel):
             resized_image = image.resize(size)
             icon_bytes_output = io.BytesIO()
             resized_image.save(icon_bytes_output, format=extension.lstrip(".").upper())
-            icon = base64.b64encode(icon_bytes_output.getvalue()).decode()
+            icon = icon_bytes_output.getvalue()
             url = f"{self._pwa_icon_url_base}{str(size[0])}x{str(size[1])}{extension}"
         # Retreive existing attachment
         attachment_model = self.env["ir.attachment"].sudo()
         attachment = attachment_model.search([("url", "like", url)])
         # Write values to ir_attachment
         values = {
-            "datas": icon,
-            "db_datas": icon,
+            "raw": icon,
             "url": url,
             "name": url,
             "type": "binary",
@@ -95,14 +93,14 @@ class ResConfigSettings(models.TransientModel):
             if pwa_icon_ir_attachments:
                 pwa_icon_ir_attachments.unlink()
             return res
+        decoded_pwa_icon = bytes(self.pwa_icon)
         # Fail if icon provided is larger than 2mb
-        if sys.getsizeof(self.pwa_icon) > 2196608:
+        if len(decoded_pwa_icon) > 2196608:
             raise exceptions.UserError(
                 self.env._("You can't upload a file with more than 2 MB.")
             )
         # Confirm if the pwa_icon binary content is an SVG or PNG
         # and process accordingly
-        decoded_pwa_icon = bytes(self.pwa_icon)
         # Full mimetype detection
         pwa_icon_mimetype = guess_mimetype(decoded_pwa_icon)
         pwa_icon_extension = "." + pwa_icon_mimetype.split("/")[-1].split("+")[0]
