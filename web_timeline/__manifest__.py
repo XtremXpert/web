@@ -34,6 +34,9 @@
             "web_timeline/static/src/views/timeline/timeline_model.esm.js",
             "web_timeline/static/src/views/timeline/timeline_canvas.esm.js",
         ],
+        "web.assets_unit_tests": [
+            "web_timeline/static/tests/**/*",
+        ],
         "web_timeline.vis-timeline_lib": [
             "/web_timeline/static/lib/vis-timeline/vis-timeline-graph2d.js",
             "/web_timeline/static/lib/vis-timeline/vis-timeline-graph2d.css",
