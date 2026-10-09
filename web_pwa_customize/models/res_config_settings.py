@@ -46,7 +46,7 @@ class ResConfigSettings(models.TransientModel):
 
     def _unpack_icon(self, icon):
         # Wrap decoded_icon in BytesIO object
-        # Odoo 20 : le champ Binary renvoie les octets bruts ; une chaîne reste du base64
+        # Odoo 20: a Binary field value is a BinaryValue; a str is base64
         decoded_icon = base64.b64decode(icon) if isinstance(icon, str) else bytes(icon)
         icon_bytes = io.BytesIO(decoded_icon)
         return Image.open(icon_bytes)

@@ -1,8 +1,8 @@
-import {describe, expect, test} from "@odoo/hoot";
 import {
     TimelineArchParser,
     TimelineParseArchError,
 } from "@web_timeline/views/timeline/timeline_arch_parser.esm";
+import {describe, expect, test} from "@odoo/hoot";
 import {FAKE_ORDER_FIELDS} from "./helpers.esm";
 import {allowTranslations} from "@web/../tests/web_test_helpers";
 import {parseXML} from "@web/core/utils/xml";

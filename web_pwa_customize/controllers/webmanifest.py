@@ -4,7 +4,6 @@ import json
 
 from odoo import http
 from odoo.http import request
-# ustr retiré en Odoo 20 : str() suffit
 
 from odoo.addons.web.controllers import webmanifest
 

@@ -1,5 +1,4 @@
 import {animationFrame, expect, test} from "@odoo/hoot";
-import {queryAll} from "@odoo/hoot-dom";
 import {
     contains,
     defineModels,
@@ -9,6 +8,7 @@ import {
     onRpc,
     preloadBundle,
 } from "@web/../tests/web_test_helpers";
+import {queryAll} from "@odoo/hoot-dom";
 
 class Partner extends models.Model {
     name = fields.Char();
@@ -116,7 +116,9 @@ test("delete button is shown on the selected item", async () => {
     await contains(itemContent).click();
     await animationFrame();
     expect(itemContent.closest(".vis-item")).toHaveClass("vis-selected");
-    expect(itemContent.closest(".vis-item").querySelector(".vis-delete")).not.toBe(null);
+    expect(itemContent.closest(".vis-item").querySelector(".vis-delete")).not.toBe(
+        null
+    );
 });
 
 test("delete button is hidden when delete is disabled", async () => {

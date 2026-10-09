@@ -38,7 +38,8 @@ class TestWebPwaCustomize(HttpCaseWithUserDemo):
         img = Image.new("RGB", (512, 512), color="red")
         img_byte_arr = io.BytesIO()
         img.save(img_byte_arr, format="PNG")
-        icon_base64 = base64.b64encode(img_byte_arr.getvalue()).decode()  # Odoo 20 : base64 texte
+        # Odoo 20: binary values are written as base64 text
+        icon_base64 = base64.b64encode(img_byte_arr.getvalue()).decode()
         config = self.env["res.config.settings"].create(
             {
                 "pwa_short_name": "New Name",

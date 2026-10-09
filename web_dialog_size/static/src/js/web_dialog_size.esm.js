@@ -1,4 +1,3 @@
-/** @odoo-module **/
 // Portage Odoo 20 / Owl 3 :
 // - Dialog expose déjà un signal `dialogSize` et une taille native "fs"
 //   (pleine largeur), on s'appuie dessus au lieu d'écrire dans `this.props`.
@@ -7,9 +6,9 @@
 import {Component, t, useProps} from "@odoo/owl";
 import {ActionDialog} from "@web/webclient/actions/action_dialog";
 import {Dialog} from "@web/core/dialog/dialog";
+import {browser} from "@web/core/browser/browser";
 import {patch} from "@web/core/utils/patch";
 import {useService} from "@web/core/utils/hooks";
-import {browser} from "@web/core/browser/browser";
 
 export const MAXIMIZED_SIZE = "fs";
 const STORAGE_KEY = "odoo.web_dialog_size.value";
@@ -27,9 +26,9 @@ export class ExpandButton extends Component {
     setup() {
         this.original_size = this.props.getoriginalsize
             ? this.props.getoriginalsize()
-            : this.props.getsize() !== MAXIMIZED_SIZE
-              ? this.props.getsize()
-              : "md";
+            : this.props.getsize() === MAXIMIZED_SIZE
+              ? "md"
+              : this.props.getsize();
     }
 
     get isMaximized() {
