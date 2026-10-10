@@ -4,9 +4,7 @@
 
 {
     "name": "Web Dialog Size",
-    "summary": """
-        A module that lets the user expand a
-        dialog box to the full screen width.""",
+    "summary": "Lets the user expand a dialog box to the full screen width.",
     "author": "ACSONE SA/NV, "
     "Therp BV, "
     "Siddharth Bhalgami,"

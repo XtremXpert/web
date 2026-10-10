@@ -60,7 +60,6 @@ export class WebEnvironmentRibbon extends Component {
     }
 }
 
-
 registry.category("main_components").add("WebEnvironmentRibbon", {
     Component: WebEnvironmentRibbon,
 });

@@ -21,7 +21,10 @@ const STORAGE_PREFIX = "odoo.columnWidth.";
 patch(ListRenderer.prototype, {
     setup() {
         super.setup();
-        if (!this.constructor.prototype.useMagicColumnWidths && !this.useMagicColumnWidths) {
+        if (
+            !this.constructor.prototype.useMagicColumnWidths &&
+            !this.useMagicColumnWidths
+        ) {
             return;
         }
         const orig = this.columnWidths;
@@ -88,7 +91,9 @@ patch(ListRenderer.prototype, {
             return;
         }
         for (const th of table.querySelectorAll("thead th[data-name]")) {
-            const stored = browser.localStorage.getItem(this._storageKey(th.dataset.name));
+            const stored = browser.localStorage.getItem(
+                this._storageKey(th.dataset.name)
+            );
             if (stored) {
                 th.style.width = `${Math.floor(parseInt(stored, 10))}px`;
             }
