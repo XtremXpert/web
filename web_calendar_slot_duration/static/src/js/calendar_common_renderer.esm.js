@@ -7,8 +7,8 @@ import {patch} from "@web/core/utils/patch";
 patch(CalendarCommonRenderer.prototype, {
     get options() {
         const options = super.options;
-        if (this.env.searchModel.context.calendar_slot_duration) {
-            options.slotDuration = this.env.searchModel.context.calendar_slot_duration;
+        if (this.props.model.meta.context.calendar_slot_duration) {
+            options.slotDuration = this.props.model.meta.context.calendar_slot_duration;
         }
         return options;
     },
